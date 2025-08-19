@@ -1,44 +1,5 @@
-server:
-  port: 8080  # API Gateway will run on port 8080
-
 spring:
-  main:
-    web-application-type: reactive  # Required for Spring Cloud Gateway, which is built on Spring WebFlux (non-blocking)
-
   application:
-    name: api-gateway  # The name by which this service will register itself in Eureka
-
-  cloud:
-    gateway:
-
-      server:
-        webflux:
-          routes:
-            - id: auth-service  # Route ID for identification (must be unique)
-              uri: lb://auth-service  # Load-balanced URI via Eureka (uses Ribbon internally)
-              predicates:
-                - Path=/api/auth/**  # Route incoming requests with this path to the auth-service
-              filters:
-              # Filters (can be custom or global) allow us to manipulate requests/responses
-              # Examples: Authentication, Logging, Rate Limiting, Circuit Breakers, CORS, Metrics, etc.
-          discovery:
-           locator:
-             enabled: true  # Enables dynamic routing based on service discovery (Eureka)
-             lower-case-service-id: true  # Converts service IDs to lowercase in routes (e.g., /auth-service/**)
-    config:
-      enabled: false  # Disable Spring Cloud Config if not using a config server
-
-  client:
-    register-with-eureka: true  # Registers this API Gateway with the Eureka Server
-    fetch-registry: true        # Fetches other services' metadata from Eureka for service discovery
-
-eureka:
-  client:
-    service-url:
-      defaultZone: http://eureka-server:8761/eureka/  # URL of the Eureka server used for service discovery
-
-# ==============================================
-# Notes:
-# - Dynamic routing (via locator.enabled=true) maps service names automatically.
-# - Manual routes (under `routes:` block) take precedence over dynamic routes if both exist.
-# - Ensure Spring Boot does not include 'spring-boot-starter-web' as it's not compatible with WebFlux
+    name: user-service
+  profiles:
+    active: dev  # default profile, can be overridden via command line or environment
