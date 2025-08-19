@@ -1,5 +1,5 @@
 spring:
   application:
-    name: user-service
+    name: api-gateway
   profiles:
-    active: dev  # default profile, can be overridden via command line or environment
+    active: local  # default profile, can be overridden via command line or environment
