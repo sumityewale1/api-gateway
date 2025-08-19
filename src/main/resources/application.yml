@@ -2,4 +2,4 @@ spring:
   application:
     name: api-gateway
   profiles:
-    active: local # default profile, can be overridden via command line or environment
+    active: dev # default profile, can be overridden via command line or environment
