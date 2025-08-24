@@ -4,18 +4,12 @@ spring:
 
   cloud:
     gateway:
-      discovery:
-        locator:
-          enabled: true
-          lower-case-service-id: true
-#      routes:
-#        - id: auth-service
-#          uri: lb://auth-service
-#          predicates:
-#            - Path=/api/auth/**
-#          filters: []  # Add custom filters here if needed
-#      config:
-#        enabled: false  # Disable Spring Cloud Config if not used
+      server:
+        webflux:
+          discovery:
+            locator:
+              enabled: true
+              lower-case-service-id: true
 
 eureka:
   client:
