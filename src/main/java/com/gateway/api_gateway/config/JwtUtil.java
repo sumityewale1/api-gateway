@@ -2,23 +2,30 @@ package com.gateway.api_gateway.config;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
+import org.springframework.stereotype.Component;
 
-import java.nio.charset.StandardCharsets;
-import java.security.Key;
-
+@Component
 public class JwtUtil {
+    private final String jwtSecret = "Z#4v8@RmP!1e^x*Lg2$sK!9wTb&EyQ3uMz^7dH@cNpA6fBj+UrXzV"; // Use same key as in Auth service
 
-    private static final String SECRET = "Z#4v8@RmP!1e^x*Lg2$sK!9wTb&EyQ3uMz^7dH@cNpA6fBj+UrXzV";
-
-    private static Key getSigningKey() {
-        return Keys.hmacShaKeyFor(SECRET.getBytes(StandardCharsets.UTF_8));
+    // Extract username from JWT
+    public String getUsernameFromToken(String token) {
+        return getClaims(token).getSubject();
     }
 
-    public static Claims validateToken(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(getSigningKey())
-                .build()
+    // Validate JWT token
+    public boolean validateToken(String token) {
+        try {
+            getClaims(token); // Will throw if invalid
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private Claims getClaims(String token) {
+        return Jwts.parser()
+                .setSigningKey(jwtSecret.getBytes())
                 .parseClaimsJws(token)
                 .getBody();
     }

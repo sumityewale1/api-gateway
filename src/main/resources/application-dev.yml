@@ -14,13 +14,13 @@ spring:
       server:
         webflux:
           routes:
-            - id: auth-service  # Route ID for identification (must be unique)
-              uri: lb://auth-service  # Load-balanced URI via Eureka (uses Ribbon internally)
-              predicates:
-                - Path=/api/auth/**  # Route incoming requests with this path to the auth-service
-              filters:
-              # Filters (can be custom or global) allow us to manipulate requests/responses
-              # Examples: Authentication, Logging, Rate Limiting, Circuit Breakers, CORS, Metrics, etc.
+#            - id: auth-service  # Route ID for identification (must be unique)
+#              uri: lb://auth-service  # Load-balanced URI via Eureka (uses Ribbon internally)
+#              predicates:
+#                - Path=/api/auth/**  # Route incoming requests with this path to the auth-service
+#              filters:
+#              # Filters (can be custom or global) allow us to manipulate requests/responses
+#              # Examples: Authentication, Logging, Rate Limiting, Circuit Breakers, CORS, Metrics, etc.
           discovery:
             locator:
               enabled: true  # Enables dynamic routing based on service discovery (Eureka)

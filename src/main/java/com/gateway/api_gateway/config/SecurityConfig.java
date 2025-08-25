@@ -2,29 +2,31 @@ package com.gateway.api_gateway.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 
+
 @Configuration
+@EnableWebFluxSecurity
 public class SecurityConfig {
 
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final com.gateway.api_gateway.config.JwtAuthenticationFilter jwtAuthFilter;
 
-    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
-        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+    public SecurityConfig(com.gateway.api_gateway.config.JwtAuthenticationFilter jwtAuthFilter) {
+        this.jwtAuthFilter = jwtAuthFilter;
     }
 
     @Bean
-    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
+    public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
         return http
-                .csrf(ServerHttpSecurity.CsrfSpec::disable)
+                .csrf(ServerHttpSecurity.CsrfSpec::disable) // Disable CSRF for simplicity
                 .authorizeExchange(exchange -> exchange
-                        .pathMatchers("/auth-service/api/auth/**", "/user-service/users/signup").permitAll()
-                        .pathMatchers("/actuator/**").permitAll()
-                        .anyExchange().authenticated()
+                        .pathMatchers("/auth-service/api/auth/**").permitAll()
+                        .anyExchange().authenticated()             // Secure others
                 )
-                .addFilterAt(jwtAuthenticationFilter, SecurityWebFiltersOrder.AUTHENTICATION)
+                .addFilterAt(jwtAuthFilter, SecurityWebFiltersOrder.AUTHENTICATION) // Register custom filter
                 .build();
     }
 }
