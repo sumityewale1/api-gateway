@@ -1,7 +1,6 @@
 spring:
   main:
     web-application-type: reactive  # Required for Spring Cloud Gateway (WebFlux)
-
   cloud:
     gateway:
       server:
